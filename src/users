@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Admin",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/42.jpg",
+    "role": "admin",
+    "password": "adminspassword",
+    "id": "1"
+  },
+  {
+    "name": "Jack Walsh",
+    "avatar": "https://avatars.githubusercontent.com/u/76875583",
+    "role": "user",
+    "password": "OgK2Qamo1Uc_Hyq",
+    "id": "2"
+  },
+  {
+    "name": "Lisa Heidenreich",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/43.jpg",
+    "role": "user",
+    "password": "XdEHbb_vZokVm3P",
+    "id": "3"
+  },
+  {
+    "name": "Nick Stroman",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/95.jpg",
+    "role": "user",
+    "password": "78Z1mzpp9e7_rQs",
+    "id": "4"
+  },
+  {
+    "name": "Carlos Glover",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/59.jpg",
+    "role": "user",
+    "password": "JDL9vL3vH_r7xyn",
+    "id": "5"
+  },
+  {
+    "name": "Jeanne Weissnat",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/47.jpg",
+    "role": "user",
+    "password": "HIutTPlaPCO6lTk",
+    "id": "6"
+  },
+  {
+    "name": "Tracy Satterfield",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/8.jpg",
+    "role": "user",
+    "password": "raXP3SmBbf1osOA",
+    "id": "7"
+  },
+  {
+    "name": "Lance Brakus",
+    "avatar": "https://avatars.githubusercontent.com/u/23104293",
+    "role": "user",
+    "password": "EEzDQT8TbrmiQXh",
+    "id": "8"
+  },
+  {
+    "name": "Louise Beahan",
+    "avatar": "https://avatars.githubusercontent.com/u/17633150",
+    "role": "user",
+    "password": "tLtyzEWg_PYLugX",
+    "id": "9"
+  },
+  {
+    "name": "Dale White III",
+    "avatar": "https://avatars.githubusercontent.com/u/14958658",
+    "role": "user",
+    "password": "i6NQuFVb3jM3kuK",
+    "id": "10"
+  }
+]
