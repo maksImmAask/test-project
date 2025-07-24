@@ -1,72 +1,98 @@
 [
   {
-    "name": "Admin",
-    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/42.jpg",
+    "name": "admin",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/77.jpg",
     "role": "admin",
     "password": "adminspassword",
+    "email": "Earline1@gmail.com",
     "id": "1"
   },
   {
-    "name": "Jack Walsh",
-    "avatar": "https://avatars.githubusercontent.com/u/76875583",
+    "name": "Kenny Schroeder",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/90.jpg",
     "role": "user",
-    "password": "OgK2Qamo1Uc_Hyq",
+    "password": "OrHXC3Cz12BuJy1",
+    "email": "Jermaine59@gmail.com",
     "id": "2"
   },
   {
-    "name": "Lisa Heidenreich",
-    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/43.jpg",
+    "name": "Mr. Andy D'Amore PhD",
+    "avatar": "https://avatars.githubusercontent.com/u/30998567",
     "role": "user",
-    "password": "XdEHbb_vZokVm3P",
+    "password": "iH0cHhM3iQCniRi",
+    "email": "Viola88@yahoo.com",
     "id": "3"
   },
   {
-    "name": "Nick Stroman",
-    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/95.jpg",
+    "name": "Alberto Kassulke",
+    "avatar": "https://avatars.githubusercontent.com/u/58131773",
     "role": "user",
-    "password": "78Z1mzpp9e7_rQs",
+    "password": "xYvOUflwT01MaoR",
+    "email": "Maudie23@hotmail.com",
     "id": "4"
   },
   {
-    "name": "Carlos Glover",
-    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/59.jpg",
+    "name": "Judith Fisher",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/4.jpg",
     "role": "user",
-    "password": "JDL9vL3vH_r7xyn",
+    "password": "jHmPGf6MORCFxvK",
+    "email": "Sofia.Leuschke@gmail.com",
     "id": "5"
   },
   {
-    "name": "Jeanne Weissnat",
-    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/47.jpg",
+    "name": "Cory Wunsch",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/87.jpg",
     "role": "user",
-    "password": "HIutTPlaPCO6lTk",
+    "password": "SiFh0L2fzUPXcvk",
+    "email": "Kirk.Hilpert@hotmail.com",
     "id": "6"
   },
   {
-    "name": "Tracy Satterfield",
-    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/8.jpg",
+    "name": "Chester Hintz",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/42.jpg",
     "role": "user",
-    "password": "raXP3SmBbf1osOA",
+    "password": "yjCFaoA_bMpL_uq",
+    "email": "Laisha_Dickinson90@gmail.com",
     "id": "7"
   },
   {
-    "name": "Lance Brakus",
-    "avatar": "https://avatars.githubusercontent.com/u/23104293",
+    "name": "Jeanne Smitham-Wolff Sr.",
+    "avatar": "https://avatars.githubusercontent.com/u/5070051",
     "role": "user",
-    "password": "EEzDQT8TbrmiQXh",
+    "password": "61WUTcrdi5fu4hs",
+    "email": "Marcia29@gmail.com",
     "id": "8"
   },
   {
-    "name": "Louise Beahan",
-    "avatar": "https://avatars.githubusercontent.com/u/17633150",
+    "name": "Sheldon Labadie",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/84.jpg",
     "role": "user",
-    "password": "tLtyzEWg_PYLugX",
+    "password": "89YzDt3_tmkY1Co",
+    "email": "Randal_Mraz@hotmail.com",
     "id": "9"
   },
   {
-    "name": "Dale White III",
-    "avatar": "https://avatars.githubusercontent.com/u/14958658",
+    "name": "Elbert Cronin",
+    "avatar": "https://avatars.githubusercontent.com/u/95403212",
     "role": "user",
-    "password": "i6NQuFVb3jM3kuK",
+    "password": "M2ACZJh1f996XKJ",
+    "email": "Keagan70@yahoo.com",
     "id": "10"
+  },
+  {
+    "name": "Dr. Pete Langworth",
+    "avatar": "https://avatars.githubusercontent.com/u/60349752",
+    "role": "user",
+    "password": "2H_ml67bFZaHHBU",
+    "email": "Derek_Gibson60@hotmail.com",
+    "id": "11"
+  },
+  {
+    "name": "Margarita Rath",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/31.jpg",
+    "role": "user",
+    "password": "uQvNKvglhHvhs7c",
+    "email": "Brock_Bruen73@gmail.com",
+    "id": "12"
   }
 ]

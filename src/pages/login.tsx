@@ -1,14 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextInput, PasswordInput, Button, Paper, Text, Center, Stack } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { TextInput ,PasswordInput, Button, Paper, Text, Center, Stack } from '@mantine/core';
 import { useAuthStore } from '../store/useAuthStore';
 
-const LoginPage = () => {
+const Login = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { login, loading, error } = useAuthStore();
+  const { login, loading, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
   const handleLogin = async () => {
     await login({ username, password });
     if (useAuthStore.getState().isAuthenticated) {
@@ -36,9 +41,9 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.currentTarget.value)}
             required
           />
-
-          {error && <Text color="red" size="sm">{error}</Text>}
-
+          <Text size="sm"  mt="md">
+            Нет аккаунта? <Link to="/signin">Зарегистрироваться</Link>
+          </Text>
           <Button
             fullWidth
             loading={loading}
@@ -53,4 +58,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login

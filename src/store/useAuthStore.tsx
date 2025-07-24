@@ -2,14 +2,14 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import api from '../api/api';
 
-type User = {
+export type User = {
   id: number;
   name: string;
   image: string;
   role: 'user' | 'admin';
   password: string;
+  email: string;
 };
-
 type Credentials = {
   username: string;
   password: string;
@@ -20,6 +20,7 @@ type RegistrationData = {
   name: string;
   password: string;
   image?: string;
+  email?: string;
   role: 'user';
 };
 

@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import PrivateRoute from "./routes/PrivateRoute";
-import { ROUTES } from "./routes/routes";
-import AdminPage from "./pages/adminPage";
-import HomePage from "./pages/homePage";
-import LoginPage from "./pages/loginPage";
-import SigninPage from "./pages/signinPage";
+import PrivateRoute from "./PrivateRoute";
+import { ROUTES } from "./routes";
+import Admin from "../pages/admin";
+import Home from "../pages/home";
+import Login from "../pages/login";
+import Signin from "../pages/signin";
 
 
 
@@ -12,17 +12,17 @@ import SigninPage from "./pages/signinPage";
 export const Router = createBrowserRouter([
   {
     path: ROUTES.LOGIN,
-    element: <LoginPage />,
+    element: <Login />,
   }
   ,
   {
     path: ROUTES.ADMIN,
-    element:<AdminPage />,
+    element:<Admin />,
   }
   ,
   {
     path: ROUTES.SIGNIN,
-    element:<SigninPage />,
+    element:<Signin />,
   }
   ,
   {
@@ -31,7 +31,7 @@ export const Router = createBrowserRouter([
     children: [
       {
         path: ROUTES.HOME,
-        element:<HomePage />,
+        element:<Home />,
       },
     ],
   },

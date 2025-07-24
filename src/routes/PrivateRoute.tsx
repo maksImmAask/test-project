@@ -9,7 +9,7 @@ const PrivateRoute = () => {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   } 
-  if (role === 'admin') {
+  if (role === 'admin' && isAuthenticated) {
     return <Navigate to="/admin" replace />;
   }
   return <Outlet />;
