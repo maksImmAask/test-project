@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { SignInLogic } from '../logic/logic';
+import { Link } from 'react-router-dom';
 import {
   TextInput,
   PasswordInput,
@@ -9,26 +9,9 @@ import {
   Center,
   Stack
 } from '@mantine/core';
-import { useAuthStore } from '../store/useAuthStore';
 
 const Signin = () => {
-  const [name, setName] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const { register, loading, isAuthenticated } = useAuthStore();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/');
-    }
-  }, [isAuthenticated, navigate]);
-  const handleRegister = async () => {
-    await register({ name, password, role: 'user' });
-    if (useAuthStore.getState().isAuthenticated) {
-      navigate('/');
-    }
-  };
-
+  const { name, setName, password, setPassword, loading, handleRegister } = SignInLogic();
   return (
     <Center style={{ minHeight: '100vh' }}>
       <Paper shadow="md" radius="md" p="xl" withBorder style={{ width: 350 }}>

@@ -1,25 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
 import { TextInput ,PasswordInput, Button, Paper, Text, Center, Stack } from '@mantine/core';
-import { useAuthStore } from '../store/useAuthStore';
-
+import { LoginLogic } from '../logic/logic';
 const Login = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const { login, loading, isAuthenticated } = useAuthStore();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/');
-    }
-  }, [isAuthenticated, navigate]);
-  const handleLogin = async () => {
-    await login({ username, password });
-    if (useAuthStore.getState().isAuthenticated) {
-      navigate('/');
-    }
-  };
+  LoginLogic();
+  const { username, setUsername, password, setPassword, loading, handleLogin } = LoginLogic();
 
   return (
     <Center style={{ minHeight: '100vh' }}>
