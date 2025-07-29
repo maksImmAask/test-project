@@ -2,9 +2,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../../store/useAuthStore'
+import { AddUserModal } from '../../../components/modals/addUser'
 import { useAdminStore } from '../../../store/useAdminStore'
 import { useTestStore } from '../../../store/useTestStore'
 import { useDisclosure } from '@mantine/hooks'
+import { EditUserModal } from '../../../components/modals/changeModal'
 import type { Question } from '../../../store/useTestStore'
 export const AdminLogic = () => {
   const role = useAuthStore((state) => state.user?.role)
@@ -22,7 +24,7 @@ export const TestsLogic = () => {
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
   
   const getTests = useTestStore((s) => s.getTests)
-
+  const deleteTest = useTestStore((s) => s.deleteTest)
   useEffect(() => {
     getTests()
   }, [])
@@ -32,13 +34,28 @@ export const TestsLogic = () => {
     editOpened,
     openEdit,
     closeEdit,
-    getTests
+    getTests,
+    deleteTest,
   }
 }
 export const UsersLogic = () => {
+  const users = useAdminStore((s) => s.users)
+  const loading = useAdminStore((s) => s.loading)
   const getUsers = useAdminStore((s) => s.getUsers)
+  const deleteUser = useAdminStore((s) => s.deleteUser)
+  const updateUser = useAdminStore((s) => s.updateUser)
+  const addUser = useAdminStore((s) => s.addUser)
 
   useEffect(() => {
     getUsers()
   }, [])
+  return {
+    EditUserModal,
+    users,
+    AddUserModal,
+    loading,
+    deleteUser,
+    updateUser,
+    addUser,
+  }
 }

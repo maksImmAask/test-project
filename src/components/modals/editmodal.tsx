@@ -18,13 +18,6 @@ type Props = {
 
 export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
   const updateTest = useTestStore((s) => s.updateTest)
-  const deleteQuestion = useTestStore((s) => s.deleteQuestion)
-  const handleDelete = async () => {
-  if (!question) return // защита от null
-
-  await deleteQuestion(question.id)
-  onClose()
-}
 
   const form = useForm({
     initialValues: {
@@ -92,7 +85,7 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
   })
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Редактировать вопрос" size="lg">
+    <Modal opened={opened} onClose={onClose} title="Редактировать вопрос" size="lg"   overlayProps={{backgroundOpacity: 0.3,}}>
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput
@@ -140,9 +133,6 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
               Добавить вариант
             </Button>
             <Group>
-              <Button variant="outline" color="red" onClick={() => {deleteQuestion(question.id); onClose()}}>
-                Удалить вопрос
-              </Button>
               <Button type="submit">Сохранить</Button>
             </Group>
           </Group>

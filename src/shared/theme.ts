@@ -2,7 +2,7 @@ import { createTheme  } from '@mantine/core';
 
 const theme = createTheme({
   colors: {
-    maksim: [
+    deepB: [
       '#228be6',
       '#dce4f5',
       '#b9c7e2',

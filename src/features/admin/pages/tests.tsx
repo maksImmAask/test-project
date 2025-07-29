@@ -1,13 +1,32 @@
-import { Box, Stack, Text, Title, Center, Button } from '@mantine/core'
+import {
+  Box,
+  Text,
+  Title,
+  Center,
+  Button,
+  Flex,
+  Accordion
+} from '@mantine/core'
+import '@mantine/notifications/styles.css'
 import { useTestStore } from '../../../store/useTestStore'
 import { TestsLogic } from '../logic/logic'
-import { EditQuestionModal } from '../../../components/editmodal/editmodal'
-import { AddQuestionModal } from '../../../components/modal/modal'
+import { EditQuestionModal } from '../../../components/modals/editmodal'
+import { AddQuestionModal } from '../../../components/modals/modal'
+import { showNotification } from '@mantine/notifications'
+
 const TestsPage = () => {
-  TestsLogic()
-  
-  const { selectedQuestion, setSelectedQuestion, editOpened, openEdit, closeEdit } = TestsLogic()
-  const { tests, loading,  } = useTestStore()
+
+  const {
+    selectedQuestion,
+    setSelectedQuestion,
+    editOpened,
+    closeEdit,
+    openEdit,
+    deleteTest
+  } = TestsLogic()
+
+  const { tests, loading } = useTestStore()
+
   if (loading) {
     return (
       <Center style={{ minHeight: '100vh' }}>
@@ -15,67 +34,109 @@ const TestsPage = () => {
       </Center>
     )
   }
-  return (
-  <>
-    <Box
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1rem',
-      }}
-    >
-      <Title order={2} style={{ flex: 0.2 }} mb="sm">
-        Id
-      </Title>
-      <Title order={2} style={{ flex: 1 }} mb="sm">
-        Question
-      </Title>
-      <Title order={2} style={{ flex: 1.1 }} mb="sm">
-        Correct Answer
-      </Title>
-      <AddQuestionModal />
-    </Box>
 
-    {tests.length === 0 ? (
-      <Text c="dimmed">No tests found</Text>
-    ) : (
-      <Stack>
-        {tests.map((test) => (
-          <Box
-            key={test.id}
-            p="sm"
-            style={{
-              border: '1px solid #eaeaea',
-              borderRadius: 8,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              height: '60px',
-            }}
-          >
-            <Text style={{ flex: 0.1 }}>{test.id}</Text>
-            <Text style={{ flex: 1 }}>{test.question}</Text>
-            <Text style={{ flex: 1 }}>
-              {test.options
-                .filter((option) => option.isCorrect)
-                .map((option) => option.text)
-                .join(', ') || 'N/A'}
-            </Text>
-            <Button  onClick={() => { setSelectedQuestion(test); openEdit() }}>
-              Редактировать 
-            </Button>
-            <EditQuestionModal
-              opened={editOpened}
-              onClose={closeEdit}
-              question={selectedQuestion}
-            />
-            
-          </Box>
-        ))}
-      </Stack>
-    )}
-  </>
+  return (
+    <>
+      <Box
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '1rem',
+        }}
+      >
+        <Title order={2} style={{ flex: 0.2 }} mb="sm">
+          Id
+        </Title>
+        <Title order={2} style={{ flex: 1 }} mb="sm">
+          Question
+        </Title>
+        <Title order={2} style={{ flex: 1.1 }} mb="sm">
+          Correct Answer
+        </Title>
+        <AddQuestionModal />
+      </Box>
+
+      {tests.length === 0 ? (
+        <Text c="dimmed">No tests found</Text>
+      ) : (
+        <Accordion variant="separated" radius="md" chevronPosition="left">
+          {tests.map((test) => (
+            <Accordion.Item key={test.id} value={test.id.toString()}>
+            <Accordion.Control>
+              <Flex justify="space-between" align="center" w="100%">
+                <Text>{test.question}</Text>
+                <Flex gap="xs">
+                  <Button
+                    size="xs"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedQuestion(test)
+                      openEdit()
+                    }}
+                  >
+                    Редактировать
+                  </Button>
+                  <Button
+                    size="xs"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      deleteTest(test.id)
+                      showNotification({
+                        title: 'Успех',
+                        message: 'Вопрос успешно удален',
+                        color: 'red',
+                      })
+                    }}
+                  >
+                    Удалить
+                  </Button>
+                </Flex>
+              </Flex>
+            </Accordion.Control>
+
+
+              <Accordion.Panel>
+                <Flex direction="column" gap="xs">
+                  {test.options.map((option) => (
+                    <Button
+                            key={option.id}
+                            variant={option.isCorrect ? 'filled' : 'outline'}
+                            onClick={(e) => {
+                              e.stopPropagation()
+
+                              if (option.isCorrect) {
+                                showNotification({
+                                  title: 'Это правильный ответ',
+                                  message: 'Вы выбрали правильный ответ.',
+                                  color: 'green',
+                                })
+                              } else {
+                                showNotification({
+                                  title: 'Это неправильный ответ',
+                                  message: 'Вы выбрали неправильный ответ.',
+                                  color: 'red',
+                                })
+                              }
+                            }}
+                          >
+                            {option.text}
+      </Button>
+                  ))}
+                </Flex>
+              </Accordion.Panel>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      )}
+
+      <EditQuestionModal
+        opened={editOpened}
+        onClose={closeEdit}
+        question={selectedQuestion}
+      />
+    </>
   )
 }
 

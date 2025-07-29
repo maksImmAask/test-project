@@ -5,9 +5,10 @@ import api from '../api/api';
 export type User = {
   id: number;
   name: string;
-  image: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' ;
   password: string;
+  correct: number;
+  incorrect: number;
   email: string;
 };
 type Credentials = {
@@ -19,7 +20,6 @@ type RegistrationData = {
   id?: number;
   name: string;
   password: string;
-  image?: string;
   email?: string;
   role: 'user';
 };
