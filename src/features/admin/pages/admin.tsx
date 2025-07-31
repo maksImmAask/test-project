@@ -1,10 +1,18 @@
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet , useLocation} from 'react-router-dom'
 import { Box, Button, Stack } from '@mantine/core'
+import { useEffect } from 'react'
 import { AdminLogic } from '../logic/logic'
 
 export default function Admin() {
   AdminLogic()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.pathname === '/admin') {
+      navigate('/admin/users', { replace: true })
+    }
+  }, [location.pathname, navigate])
 
   return (
     <Box

@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { showNotification } from '@mantine/notifications'
+import '@mantine/notifications/styles.css'
 import api from '../api/api'
 
 export type Option = {
@@ -50,8 +52,18 @@ export const useTestStore = create<TestState>((set) => ({
       set((state) => ({
         tests: [...state.tests, data],
       }))
+      showNotification ({
+        title: 'Успех',
+        message: 'Тест добавлен',
+        color:  'green'
+      })
     } catch (error) {
       console.error('Ошибка при добавлении вопроса:', error)
+      showNotification ({
+        title: 'Ошибка',
+        message: 'Не удалось добавить тест',
+        color:  'red'
+      })
     }
   },
 
@@ -62,10 +74,20 @@ export const useTestStore = create<TestState>((set) => ({
           test.id === id ? updatedQuestion : test
         ),
       }))
+      showNotification ({
+        title: 'Успешно',
+        message: 'тест обновлен',
+        color:  'green'
+      })
 
       await api.put(`/test/${id}`, updatedQuestion)
     } catch (error) {
       console.error('Ошибка при обновлении теста:', error)
+      showNotification ({
+        title: 'Ошибка',
+        message: 'Не удалось обновить',
+        color:  'red'
+      })
     }
   },
 
@@ -75,8 +97,18 @@ export const useTestStore = create<TestState>((set) => ({
       set((state) => ({
         tests: state.tests.filter((test) => test.id !== id),
       }))
+    showNotification({
+      title: 'Успешно',
+      message: 'Тест удалён',
+      color: 'green',
+    })
     } catch (error) {
       console.error('Ошибка при удалении теста:', error)
+      showNotification ({
+        title: 'Ошибка',
+        message: 'Не удалось удалить',
+        color: 'green'
+      })
     }
   },
 }))

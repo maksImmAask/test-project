@@ -21,7 +21,7 @@ const Signin = () => {
             label="Имя пользователя"
             placeholder="Введите имя"
             value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
+            onChange={(e) => setName(e.currentTarget.value.trimStart())}
             required
           />
 
@@ -29,7 +29,7 @@ const Signin = () => {
             label="Пароль"
             placeholder="Введите пароль"
             value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
+            onChange={(e) => setPassword(e.currentTarget.value.trimStart())}
             required
           />
 

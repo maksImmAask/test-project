@@ -5,27 +5,38 @@ import {
   Center,
   Button,
   Flex,
-  Accordion
+  Accordion,
+  Pagination
 } from '@mantine/core'
+import { ConfirmDeleteModal } from '../../../components/modals/confirmDelete'
+import { AnswerCheckbox } from '../../../components/checkbox/checkbox'
 import '@mantine/notifications/styles.css'
 import { useTestStore } from '../../../store/useTestStore'
 import { TestsLogic } from '../logic/logic'
 import { EditQuestionModal } from '../../../components/modals/editmodal'
 import { AddQuestionModal } from '../../../components/modals/modal'
 import { showNotification } from '@mantine/notifications'
+import { useState } from 'react'
 
 const TestsPage = () => {
-
   const {
     selectedQuestion,
     setSelectedQuestion,
     editOpened,
     closeEdit,
     openEdit,
-    deleteTest
+    setDeleteModalOpen,
+    setSelectedId,
+    deleteModalOpen,
+    handleDelete
   } = TestsLogic()
 
   const { tests, loading } = useTestStore()
+  const [page, setPage] = useState(1)
+  const itemsPerPage = 10
+
+  const start = (page - 1) * itemsPerPage
+  const paginatedTests = tests.slice(start, start + itemsPerPage)
 
   if (loading) {
     return (
@@ -45,14 +56,8 @@ const TestsPage = () => {
           marginBottom: '1rem',
         }}
       >
-        <Title order={2} style={{ flex: 0.2 }} mb="sm">
-          Id
-        </Title>
         <Title order={2} style={{ flex: 1 }} mb="sm">
-          Question
-        </Title>
-        <Title order={2} style={{ flex: 1.1 }} mb="sm">
-          Correct Answer
+          Questions
         </Title>
         <AddQuestionModal />
       </Box>
@@ -60,81 +65,100 @@ const TestsPage = () => {
       {tests.length === 0 ? (
         <Text c="dimmed">No tests found</Text>
       ) : (
-        <Accordion variant="separated" radius="md" chevronPosition="left">
-          {tests.map((test) => (
-            <Accordion.Item key={test.id} value={test.id.toString()}>
-            <Accordion.Control>
-              <Flex justify="space-between" align="center" w="100%">
-                <Text>{test.question}</Text>
-                <Flex gap="xs">
-                  <Button
-                    size="xs"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setSelectedQuestion(test)
-                      openEdit()
-                    }}
-                  >
-                    Редактировать
-                  </Button>
-                  <Button
-                    size="xs"
-                    variant="outline"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      deleteTest(test.id)
-                      showNotification({
-                        title: 'Успех',
-                        message: 'Вопрос успешно удален',
-                        color: 'red',
-                      })
-                    }}
-                  >
-                    Удалить
-                  </Button>
-                </Flex>
-              </Flex>
-            </Accordion.Control>
+        <>
+          <Accordion variant="separated" radius="md" chevronPosition="left">
+            {paginatedTests.map((test) => (
+              <Accordion.Item key={test.id} value={test.id.toString()}>
+                <Flex gap={'xs'}>
+                  <Accordion.Control>
+                    <Flex justify="space-between" align="center" w="100%">
+                      <Text>{test.question}</Text>
+                    </Flex>
+                  </Accordion.Control>
 
-
-              <Accordion.Panel>
-                <Flex direction="column" gap="xs">
-                  {test.options.map((option) => (
+                  <Flex gap="xs" style={{ margin: 'auto' }}>
                     <Button
-                            key={option.id}
-                            variant={option.isCorrect ? 'filled' : 'outline'}
-                            onClick={(e) => {
-                              e.stopPropagation()
-
-                              if (option.isCorrect) {
-                                showNotification({
-                                  title: 'Это правильный ответ',
-                                  message: 'Вы выбрали правильный ответ.',
-                                  color: 'green',
-                                })
-                              } else {
-                                showNotification({
-                                  title: 'Это неправильный ответ',
-                                  message: 'Вы выбрали неправильный ответ.',
-                                  color: 'red',
-                                })
-                              }
-                            }}
-                          >
-                            {option.text}
-      </Button>
-                  ))}
+                      size="xs"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedQuestion(test)
+                        openEdit()
+                      }}
+                    >
+                      Редактировать
+                    </Button>
+                    <Button
+                      size="xs"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedId(test.id)
+                        setDeleteModalOpen(true)
+                      }}
+                    >
+                      Удалить
+                    </Button>
+                  </Flex>
                 </Flex>
-              </Accordion.Panel>
-            </Accordion.Item>
-          ))}
-        </Accordion>
+
+                <Accordion.Panel>
+                  <Flex direction="column" gap="xs">
+                    {test.options.map((option) => (
+                      <Button
+                        key={option.id}
+                        style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}
+                        variant={option.isCorrect ? 'filled' : 'outline'}
+                        onClick={(e) => {
+                          e.stopPropagation()
+
+                          if (option.isCorrect) {
+                            showNotification({
+                              title: 'Это правильный ответ',
+                              message: 'Вы выбрали правильный ответ.',
+                              color: 'green',
+                            })
+                          } else {
+                            showNotification({
+                              title: 'Это неправильный ответ',
+                              message: 'Вы выбрали неправильный ответ.',
+                              color: 'red',
+                            })
+                          }
+                        }}
+                      >
+                        <AnswerCheckbox isCorrect={option.isCorrect} />
+                        {option.text}
+                      </Button>
+                    ))}
+                  </Flex>
+                </Accordion.Panel>
+              </Accordion.Item>
+            ))}
+          </Accordion>
+          <Center>
+          <Pagination
+            total={Math.ceil(tests.length / itemsPerPage)}
+            value={page}
+            onChange={setPage}
+            mt="md"
+          />
+          </Center>
+        </>
       )}
 
       <EditQuestionModal
         opened={editOpened}
         onClose={closeEdit}
         question={selectedQuestion}
+      />
+
+      <ConfirmDeleteModal
+        opened={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false)
+          setSelectedId(null)
+        }}
+        onConfirm={handleDelete}
       />
     </>
   )

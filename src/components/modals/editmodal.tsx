@@ -1,15 +1,17 @@
 import {
-  Button,
   Modal,
   TextInput,
   Group,
   Radio,
   Stack,
+  Button,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useTestStore } from '../../store/useTestStore'
 import { useEffect } from 'react'
 import type { Question } from '../../store/useTestStore'
+import { LoadingButton } from '../loadingButton/loadingButt'
+
 type Props = {
   opened: boolean
   onClose: () => void
@@ -27,7 +29,6 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
         { text: '', isCorrect: false },
       ],
     },
-
     validate: {
       question: (val) => (!val.trim() ? 'Введите вопрос' : null),
       options: (opts) =>
@@ -36,7 +37,8 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
   })
 
   useEffect(() => {
-    if (question) {
+    if (opened && question) {
+      form.reset()
       form.setValues({
         question: question.question,
         options: question.options.map((opt) => ({
@@ -45,7 +47,8 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
         })),
       })
     }
-  }, [question])
+  }, [opened, question])
+
 
   const setCorrect = (index: number) => {
     const updated = form.values.options.map((opt, i) => ({
@@ -67,9 +70,11 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
     form.setFieldValue('options', updated)
   }
 
-  const handleSubmit = form.onSubmit((values) => {
-    if (!question) return
+  const handleAsyncSubmit = async () => {
+    const isValid = form.validate()
+    if (isValid.hasErrors || !question) return
 
+    const values = form.values
     const updated = {
       id: question.id,
       question: values.question,
@@ -82,11 +87,17 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
 
     updateTest(question.id, updated)
     onClose()
-  })
+  }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Редактировать вопрос" size="lg"   overlayProps={{backgroundOpacity: 0.3,}}>
-      <form onSubmit={handleSubmit}>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title="Редактировать вопрос"
+      size="lg"
+      overlayProps={{ backgroundOpacity: 0.3 }}
+    >
+      <form onSubmit={(e) => e.preventDefault()}>
         <Stack>
           <TextInput
             label="Вопрос"
@@ -132,9 +143,9 @@ export const EditQuestionModal = ({ opened, onClose, question }: Props) => {
             <Button variant="light" onClick={addOption}>
               Добавить вариант
             </Button>
-            <Group>
-              <Button type="submit">Сохранить</Button>
-            </Group>
+            <LoadingButton onAsyncClick={handleAsyncSubmit}>
+              Сохранить
+            </LoadingButton>
           </Group>
         </Stack>
       </form>

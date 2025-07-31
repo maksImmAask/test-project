@@ -22,13 +22,33 @@ export const AdminLogic = () => {
 export const TestsLogic = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null)
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false)
-  
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+
+const handleDelete = async () => {
+  if (selectedId !== null) {
+    try {
+      await deleteTest(selectedId) 
+    } catch (error) {
+      console.error(error)
+    }
+    setSelectedId(null)
+  }
+
+  setDeleteModalOpen(false)
+}
+
   const getTests = useTestStore((s) => s.getTests)
   const deleteTest = useTestStore((s) => s.deleteTest)
   useEffect(() => {
     getTests()
   }, [])
   return {
+    setDeleteModalOpen,
+    deleteModalOpen,
+    handleDelete,
+    setSelectedId,
+    selectedId,
     selectedQuestion,
     setSelectedQuestion,
     editOpened,
@@ -45,11 +65,30 @@ export const UsersLogic = () => {
   const deleteUser = useAdminStore((s) => s.deleteUser)
   const updateUser = useAdminStore((s) => s.updateUser)
   const addUser = useAdminStore((s) => s.addUser)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+  const handleDelete = async () => {
+  if (selectedUserId !== null) {
+    try {
+      await deleteUser(selectedUserId) 
+    } catch (error) {
+      console.error(error)
+    }
+    setSelectedUserId(null)
+  }
+
+  setDeleteModalOpen(false)
+}
 
   useEffect(() => {
     getUsers()
   }, [])
   return {
+    handleDelete,
+    deleteModalOpen,
+    setDeleteModalOpen,
+    selectedUserId,
+    setSelectedUserId,
     EditUserModal,
     users,
     AddUserModal,

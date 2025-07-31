@@ -2,7 +2,6 @@ import { Button, Modal, Stack, TextInput } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
 import { useAdminStore } from '../../store/useAdminStore'
-import { showNotification } from '@mantine/notifications'
 
 export function AddUserModal() {
   const [opened, { open, close }] = useDisclosure(false)
@@ -23,20 +22,11 @@ export function AddUserModal() {
   const handleSubmit = () => {
     addUser({ ...form.values })
       .then(() => {
-        showNotification({
-          title: 'Пользователь добавлен',
-          message: `${form.values.name} успешно добавлен`,
-          color: 'teal',
-        })
         form.reset()
         close()
       })
       .catch((error) => {
-        showNotification({
-          title: 'Ошибка',
-          message: error.message,
-          color: 'red',
-        })
+        console.log(error)
       })
   }
 
