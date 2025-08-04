@@ -7,7 +7,8 @@ import {
   Flex,
   Accordion,
   Pagination,
-  Loader
+  Loader,
+  Select,
 } from '@mantine/core'
 import { NoteRemove } from 'iconsax-react'
 import { ConfirmDeleteModal } from '../../../components/modals/confirmDelete'
@@ -20,6 +21,8 @@ import { AddQuestionModal } from '../../../components/modals/modal'
 import { showNotification } from '@mantine/notifications'
 import { useState } from 'react'
 
+const PAGE_OPTIONS = ['5', '10', '15', '25']
+
 const TestsPage = () => {
   const {
     setDeleteModalOpen,
@@ -30,8 +33,9 @@ const TestsPage = () => {
 
   const { tests, loading } = useTestStore()
   const [page, setPage] = useState(1)
-  const itemsPerPage = 10
+  const [itemsPerPage, setItemsPerPage] = useState(10)
 
+  const totalPages = Math.max(1, Math.ceil(tests.length / itemsPerPage))
   const start = (page - 1) * itemsPerPage
   const paginatedTests = tests.slice(start, start + itemsPerPage)
 
@@ -56,6 +60,9 @@ const TestsPage = () => {
         <Title order={2} style={{ flex: 1 }} mb="sm">
           Questions
         </Title>
+        <Title>
+          (Количество вопросов в странице: {itemsPerPage})
+        </Title>
         <AddQuestionModal />
       </Box>
 
@@ -68,32 +75,32 @@ const TestsPage = () => {
               <Accordion.Item key={test.id} value={test.id.toString()}>
                 <Flex gap={'xs'}>
                   <Accordion.Control>
-                    <Box style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }} key={index}>
+                    <Box style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Text>{start + index + 1}.</Text>
                       <Text>{test.question}</Text>
                     </Box>
                   </Accordion.Control>
 
-                <Flex gap="xs" style={{ margin: 'auto' }}>
-                  <EditQuestionModal question={test} />
-                  <Button
-                    size="xs"
-                    variant="outline"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setSelectedId(test.id)
-                      setDeleteModalOpen(true)
-                    }}
-                  >
-                    <NoteRemove
-                      size="16"
-                      color="#5c68ac"
-                      variant="Broken"
-                      style={{ marginRight: 4 }}
-                    />
-                    Удалить
-                  </Button>
-                </Flex>
+                  <Flex gap="xs" style={{ margin: 'auto' }}>
+                    <EditQuestionModal question={test} />
+                    <Button
+                      size="xs"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedId(test.id)
+                        setDeleteModalOpen(true)
+                      }}
+                    >
+                      <NoteRemove
+                        size="16"
+                        color="#5c68ac"
+                        variant="Broken"
+                        style={{ marginRight: 4 }}
+                      />
+                      Удалить
+                    </Button>
+                  </Flex>
                 </Flex>
 
                 <Accordion.Panel>
@@ -130,18 +137,26 @@ const TestsPage = () => {
               </Accordion.Item>
             ))}
           </Accordion>
-          <Center>
-          <Pagination
-            total={Math.ceil(tests.length / itemsPerPage)}
-            value={page}
-            onChange={setPage}
-            mt="md"
-          />
+
+          <Center mt="md" style={{ gap: 16 }}>
+            <Pagination
+              total={totalPages}
+              value={page}
+              onChange={setPage}
+            />
+            <Select
+              data={PAGE_OPTIONS}
+              value={String(itemsPerPage)}
+              onChange={(val) => {
+                setItemsPerPage(Number(val))
+                setPage(1)
+              }}
+              style={{ width: 80 }}
+              placeholder="На стр."
+            />
           </Center>
         </>
       )}
-
-
 
       <ConfirmDeleteModal
         opened={deleteModalOpen}
