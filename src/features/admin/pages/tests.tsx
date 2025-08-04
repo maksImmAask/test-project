@@ -6,8 +6,10 @@ import {
   Button,
   Flex,
   Accordion,
-  Pagination
+  Pagination,
+  Loader
 } from '@mantine/core'
+import { NoteRemove } from 'iconsax-react'
 import { ConfirmDeleteModal } from '../../../components/modals/confirmDelete'
 import { AnswerCheckbox } from '../../../components/checkbox/checkbox'
 import '@mantine/notifications/styles.css'
@@ -20,11 +22,6 @@ import { useState } from 'react'
 
 const TestsPage = () => {
   const {
-    selectedQuestion,
-    setSelectedQuestion,
-    editOpened,
-    closeEdit,
-    openEdit,
     setDeleteModalOpen,
     setSelectedId,
     deleteModalOpen,
@@ -40,8 +37,8 @@ const TestsPage = () => {
 
   if (loading) {
     return (
-      <Center style={{ minHeight: '100vh' }}>
-        <Text>Loading...</Text>
+      <Center style={{ minHeight: '100%' }}>
+        <Loader color='#5c68ac'></Loader>
       </Center>
     )
   }
@@ -67,38 +64,36 @@ const TestsPage = () => {
       ) : (
         <>
           <Accordion variant="separated" radius="md" chevronPosition="left">
-            {paginatedTests.map((test) => (
+            {paginatedTests.map((test, index) => (
               <Accordion.Item key={test.id} value={test.id.toString()}>
                 <Flex gap={'xs'}>
                   <Accordion.Control>
-                    <Flex justify="space-between" align="center" w="100%">
+                    <Box style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }} key={index}>
+                      <Text>{start + index + 1}.</Text>
                       <Text>{test.question}</Text>
-                    </Flex>
+                    </Box>
                   </Accordion.Control>
 
-                  <Flex gap="xs" style={{ margin: 'auto' }}>
-                    <Button
-                      size="xs"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectedQuestion(test)
-                        openEdit()
-                      }}
-                    >
-                      Редактировать
-                    </Button>
-                    <Button
-                      size="xs"
-                      variant="outline"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectedId(test.id)
-                        setDeleteModalOpen(true)
-                      }}
-                    >
-                      Удалить
-                    </Button>
-                  </Flex>
+                <Flex gap="xs" style={{ margin: 'auto' }}>
+                  <EditQuestionModal question={test} />
+                  <Button
+                    size="xs"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedId(test.id)
+                      setDeleteModalOpen(true)
+                    }}
+                  >
+                    <NoteRemove
+                      size="16"
+                      color="#5c68ac"
+                      variant="Broken"
+                      style={{ marginRight: 4 }}
+                    />
+                    Удалить
+                  </Button>
+                </Flex>
                 </Flex>
 
                 <Accordion.Panel>
@@ -146,11 +141,7 @@ const TestsPage = () => {
         </>
       )}
 
-      <EditQuestionModal
-        opened={editOpened}
-        onClose={closeEdit}
-        question={selectedQuestion}
-      />
+
 
       <ConfirmDeleteModal
         opened={deleteModalOpen}

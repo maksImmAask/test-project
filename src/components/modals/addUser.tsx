@@ -2,6 +2,8 @@ import { Button, Modal, Stack, TextInput } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
 import { useAdminStore } from '../../store/useAdminStore'
+import { Add } from 'iconsax-react'
+import { LoadingButton } from '../loadingButton/loadingButton'
 
 export function AddUserModal() {
   const [opened, { open, close }] = useDisclosure(false)
@@ -19,24 +21,22 @@ export function AddUserModal() {
     },
   })
 
-  const handleSubmit = () => {
-    addUser({ ...form.values })
-      .then(() => {
-        form.reset()
-        close()
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+const handleSubmit = async () => {
+  try {
+    await addUser({ ...form.values });
+    form.reset();
+    close(); 
+  } catch {
+    // обработка ошибок
   }
-
+};
 
   return (
     <>
-      <Button onClick={open}>Добавить Пользователя</Button>
+      <Button onClick={open}> <Add size={16} style={{margin: 4}} color='#fff'/> Добавить Пользователя</Button>
 
       <Modal opened={opened} onClose={close} title="Добавить пользователя" centered>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={form.onSubmit(() => {})}>
           <Stack>
             <TextInput
               label="Имя"
@@ -58,7 +58,14 @@ export function AddUserModal() {
               {...form.getInputProps('email')}
             />
 
-            <Button type="submit">Сохранить</Button>
+            <LoadingButton
+              fullWidth
+              onAsyncClick={async () => {
+                await handleSubmit();
+              }}
+            >
+              Сохранить
+            </LoadingButton>
           </Stack>
         </form>
       </Modal>

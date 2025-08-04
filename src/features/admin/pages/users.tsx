@@ -1,7 +1,10 @@
-import { Box, Text, Title, Center, Button, Accordion, Flex, Pagination } from '@mantine/core'
-import { useState } from 'react'
+import { Box, Text, Title, Center, Button, Accordion, Flex, Loader, Pagination } from '@mantine/core'
 import { UsersLogic } from '../logic/logic'
+import { Trash } from 'iconsax-react'
 import { ConfirmDeleteModal } from '../../../components/modals/confirmDelete'
+import { useState } from 'react'
+
+const USERS_PER_PAGE = 10
 
 const UsersPage = () => {
   const {
@@ -16,15 +19,15 @@ const UsersPage = () => {
   } = UsersLogic()
 
   const [activePage, setActivePage] = useState(1)
-  const perPage = 10
-  const start = (activePage - 1) * perPage
-  const end = start + perPage
+  const totalPages = Math.ceil(users.length / USERS_PER_PAGE)
+  const start = (activePage - 1) * USERS_PER_PAGE
+  const end = start + USERS_PER_PAGE
   const currentUsers = users.slice(start, end)
 
   if (loading) {
     return (
-      <Center style={{ minHeight: '100vh' }}>
-        <Text>Loading...</Text>
+      <Center style={{ minHeight: '100%' }}>
+        <Loader color='#5c68ac' />
       </Center>
     )
   }
@@ -40,10 +43,7 @@ const UsersPage = () => {
         }}
       >
         <Title order={2} style={{ flex: '1' }} mb="sm">
-          Name
-        </Title>
-        <Title order={2} style={{ flex: '1' }} mb="sm">
-          Password
+          Users
         </Title>
         <AddUserModal />
       </Box>
@@ -53,7 +53,7 @@ const UsersPage = () => {
       ) : (
         <>
           <Accordion variant="separated" radius="md" chevronPosition="left">
-            {currentUsers.map((user) => (
+            {currentUsers.map((user, index) => (
               <Accordion.Item key={user.id} value={String(user.id)}>
                 <Flex gap={'xs'}>
                   <Accordion.Control>
@@ -64,7 +64,9 @@ const UsersPage = () => {
                         justifyContent: 'space-between',
                         width: '100%',
                       }}
+                      key={index}
                     >
+                      <Text style={{ flex: 0.1 }}>{start + index + 1}.</Text>
                       <Text style={{ flex: 1 }}>{user.name}</Text>
                       <Text style={{ flex: 1 }}>{user.password}</Text>
                     </Box>
@@ -80,7 +82,8 @@ const UsersPage = () => {
                         setDeleteModalOpen(true)
                       }}
                       disabled={user.role === 'admin'}
-                    >
+                    > 
+                      <Trash size="16" color='#5c68ac' style={{margin: 4}}/>
                       Удалить
                     </Button>
                   </Flex>
@@ -94,15 +97,18 @@ const UsersPage = () => {
               </Accordion.Item>
             ))}
           </Accordion>
-
-          <Center mt="md">
+          <Center>
+            
+          </Center>
+          {totalPages > 1 && (
             <Pagination
-              total={Math.ceil(users.length / perPage)}
               value={activePage}
               onChange={setActivePage}
-              size="sm"
+              total={totalPages}
+              mt="md"
+              
             />
-          </Center>
+          )}
         </>
       )}
 

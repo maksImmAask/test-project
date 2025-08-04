@@ -19,6 +19,8 @@ type TestState = {
   tests: Question[]
   currentTest: Question | null
   loading: boolean
+  search: string
+  setSearch: (search: string) => void
   setTests: (tests: Question[]) => void
   setCurrentTest: (test: Question | null) => void
   getTests: () => Promise<void>
@@ -31,6 +33,9 @@ export const useTestStore = create<TestState>((set) => ({
   tests: [],
   currentTest: null,
   loading: true,
+  search: '',
+  setSearch: (search) => set({ search }),
+
   setTests: (tests) => set({ tests }),
 
   setCurrentTest: (test) => set({ currentTest: test }),
@@ -52,17 +57,18 @@ export const useTestStore = create<TestState>((set) => ({
       set((state) => ({
         tests: [...state.tests, data],
       }))
-      showNotification ({
-        title: 'Успех',
-        message: 'Тест добавлен',
-        color:  'green'
-      })
     } catch (error) {
       console.error('Ошибка при добавлении вопроса:', error)
       showNotification ({
         title: 'Ошибка',
         message: 'Не удалось добавить тест',
         color:  'red'
+      })
+    } finally {
+      showNotification ({
+        title: 'Успех',
+        message: 'Тест добавлен',
+        color:  'green'
       })
     }
   },
@@ -74,11 +80,6 @@ export const useTestStore = create<TestState>((set) => ({
           test.id === id ? updatedQuestion : test
         ),
       }))
-      showNotification ({
-        title: 'Успешно',
-        message: 'тест обновлен',
-        color:  'green'
-      })
 
       await api.put(`/test/${id}`, updatedQuestion)
     } catch (error) {
@@ -87,6 +88,12 @@ export const useTestStore = create<TestState>((set) => ({
         title: 'Ошибка',
         message: 'Не удалось обновить',
         color:  'red'
+      })
+    } finally {
+      showNotification ({
+        title: 'Успешно',
+        message: 'тест обновлен',
+        color:  'green'
       })
     }
   },
@@ -97,16 +104,17 @@ export const useTestStore = create<TestState>((set) => ({
       set((state) => ({
         tests: state.tests.filter((test) => test.id !== id),
       }))
-    showNotification({
-      title: 'Успешно',
-      message: 'Тест удалён',
-      color: 'green',
-    })
     } catch (error) {
       console.error('Ошибка при удалении теста:', error)
       showNotification ({
         title: 'Ошибка',
         message: 'Не удалось удалить',
+        color: 'green'
+      })
+    } finally {
+      showNotification ({
+        title: 'Успех',
+        message: 'Тест удален',
         color: 'green'
       })
     }

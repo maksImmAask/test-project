@@ -1,5 +1,5 @@
 import { Modal, Button, Text } from '@mantine/core'
-import { LoadingButton } from '../loadingButton/loadingButt'
+import { LoadingButton } from '../loadingButton/loadingButton'
 
 type ConfirmDeleteModalProps = {
   opened: boolean

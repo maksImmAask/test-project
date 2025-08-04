@@ -1,6 +1,7 @@
 import { useNavigate, Outlet , useLocation} from 'react-router-dom'
 import { Box, Button, Stack } from '@mantine/core'
 import { useEffect } from 'react'
+import { User, Task } from 'iconsax-react'
 import { AdminLogic } from '../logic/logic'
 
 export default function Admin() {
@@ -43,13 +44,15 @@ export default function Admin() {
             <Button
               fullWidth
               onClick={() => navigate('/admin/users')}
-            >
+            > 
+              <User size={16} style={{ marginRight: 4 }} color="#fff" />
               Users
             </Button>
             <Button
               fullWidth
               onClick={() => navigate('/admin/tests')}
             >
+              <Task size={16} style={{ marginRight: 4 }} color="#fff" />
               Tests
             </Button>
           </Stack>

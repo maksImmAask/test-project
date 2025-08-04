@@ -8,7 +8,9 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
+import { Add } from 'iconsax-react'
 import { useTestStore } from '../../store/useTestStore'
+import { LoadingButton } from '../loadingButton/loadingButton'
 
 export function AddQuestionModal() {
   const [opened, { open, close }] = useDisclosure(false)
@@ -50,7 +52,11 @@ export function AddQuestionModal() {
     form.setFieldValue('options', updated)
   }
 
-  const handleSubmit = form.onSubmit((values) => {
+  const handleAsyncSubmit = async () => {
+    const isValid = form.validate()
+    if (isValid.hasErrors) return
+
+    const values = form.values
     const prepared = {
       id: Date.now(),
       question: values.question,
@@ -60,17 +66,17 @@ export function AddQuestionModal() {
         isCorrect: opt.isCorrect,
       })),
     }
-    addQuestion(prepared)
+    await addQuestion(prepared)
     form.reset()
     close()
-  })
+  }
 
   return (
     <>
-      <Button onClick={open}>Добавить вопрос</Button>
+      <Button onClick={open}> <Add size={16} color='#fff' style={{margin: 4}} /> Добавить вопрос</Button>
 
       <Modal opened={opened} onClose={close} title="Добавить вопрос" size="lg">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={e => e.preventDefault()}>
           <Stack>
             <TextInput
               label="Вопрос"
@@ -116,7 +122,9 @@ export function AddQuestionModal() {
               <Button variant="light" onClick={addOption}>
                 Добавить вариант
               </Button>
-              <Button type="submit">Сохранить</Button>
+              <LoadingButton onAsyncClick={handleAsyncSubmit}>
+                Сохранить
+              </LoadingButton>
             </Group>
           </Stack>
         </form>

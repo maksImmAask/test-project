@@ -84,6 +84,7 @@ export const UsersLogic = () => {
     getUsers()
   }, [])
   return {
+    getUsers,
     handleDelete,
     deleteModalOpen,
     setDeleteModalOpen,

@@ -23,17 +23,18 @@ export const useAdminStore = create<AdminState>((set) => ({
       set((state) => ({
         users: [...state.users, data],
       }))
-      showNotification({
-        title: 'Успех',
-        message: 'Пользователь добавлен',
-        color: 'green'
-      })
     } catch (error) {
       console.error('Ошибка при добавлении пользователя:', error)
       showNotification({
         title: 'Ошибка',
         message: 'Чтото пошло не так',
         color: 'red'
+      })
+    } finally {
+      showNotification({
+        title: 'Успех',
+        message: 'Пользователь добавлен',
+        color: 'green'
       })
     }
   },
@@ -43,17 +44,18 @@ export const useAdminStore = create<AdminState>((set) => ({
       set((state) => ({
         users: state.users.filter((user) => user.id !== id),
       }))
-      showNotification({
-        title: 'Успех',
-        message: 'Пользователь удален',
-        color: 'green'
-      })
     } catch (error) {
       console.error('Ошибка при удалении пользователя:', error)
       showNotification({
         title: 'Ошибка',
         message: 'Не удалось удалить пользователя',
         color: ''
+      })
+    } finally {
+      showNotification({
+        title: 'Успех',
+        message: 'Пользователь удален',
+        color: 'green'
       })
     }
   },
@@ -64,11 +66,6 @@ export const useAdminStore = create<AdminState>((set) => ({
           user.id === id ? updatedUser : user
         ),
       }))
-      showNotification({
-        title: 'Успех',
-        message: 'Пользователь обновлен',
-        color: 'green'
-      })
       await api.put(`/users/${id}`, updatedUser)
     } catch (error) {
       console.error('Ошибка при обновлении пользователя:', error)
@@ -76,6 +73,12 @@ export const useAdminStore = create<AdminState>((set) => ({
         title: 'Ошибка',
         message: 'Не удалось обновить',
         color: 'red'
+      })
+    } finally {
+      showNotification({
+        title: 'Успех',
+        message: 'Пользователь обновлен',
+        color: 'green'
       })
     }
   },

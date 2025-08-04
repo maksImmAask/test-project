@@ -1,16 +1,16 @@
 import {
-  Button,
   Modal,
   Stack,
   TextInput,
   NumberInput,
 } from '@mantine/core'
+import { UserEdit } from 'iconsax-react'
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect } from 'react'
 import { useForm } from '@mantine/form'
 import { useAdminStore } from '../../store/useAdminStore'
 import type { User } from '../../store/useAuthStore'
-import { LoadingButton } from '../loadingButton/loadingButt'
+import { LoadingButton } from '../loadingButton/loadingButton'
 
 type EditUserModalProps = {
   user: User
@@ -60,6 +60,11 @@ export function EditUserModal({ user, disabled = false }: EditUserModalProps) {
         size="xs"
         disabled={disabled}
       >
+        <UserEdit
+        size="16"
+        color="#FFF"
+        style={{ marginRight: 4 }}
+        />
         Редактировать
       </LoadingButton>
 
@@ -69,7 +74,7 @@ export function EditUserModal({ user, disabled = false }: EditUserModalProps) {
         title="Редактировать пользователя"
         centered
       >
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={form.onSubmit(() => {})}>
           <Stack>
             <TextInput
               label="Имя"
@@ -103,7 +108,12 @@ export function EditUserModal({ user, disabled = false }: EditUserModalProps) {
               {...form.getInputProps('incorrect')}
             />
 
-            <Button type="submit">Сохранить изменения</Button>
+            <LoadingButton
+              fullWidth
+              onAsyncClick={handleSubmit}
+            >
+              Сохранить изменения
+            </LoadingButton>
           </Stack>
         </form>
       </Modal>
