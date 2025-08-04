@@ -28,7 +28,7 @@ const TestsPage = () => {
     setDeleteModalOpen,
     setSelectedId,
     deleteModalOpen,
-    handleDelete
+    handleDelete,
   } = TestsLogic()
 
   const { tests, loading } = useTestStore()
@@ -39,10 +39,18 @@ const TestsPage = () => {
   const start = (page - 1) * itemsPerPage
   const paginatedTests = tests.slice(start, start + itemsPerPage)
 
+  const handleChangePerPage = (val: string | null) => {
+    const parsed = parseInt(val || '10')
+    if (!isNaN(parsed)) {
+      setItemsPerPage(parsed)
+      setPage(1)
+    }
+  }
+
   if (loading) {
     return (
       <Center style={{ minHeight: '100%' }}>
-        <Loader color='#5c68ac'></Loader>
+        <Loader color="#5c68ac" />
       </Center>
     )
   }
@@ -60,9 +68,7 @@ const TestsPage = () => {
         <Title order={2} style={{ flex: 1 }} mb="sm">
           Questions
         </Title>
-        <Title>
-          (Количество вопросов в странице: {itemsPerPage})
-        </Title>
+        <Title>(question per page: {itemsPerPage})</Title>
         <AddQuestionModal />
       </Box>
 
@@ -72,10 +78,16 @@ const TestsPage = () => {
         <>
           <Accordion variant="separated" radius="md" chevronPosition="left">
             {paginatedTests.map((test, index) => (
-              <Accordion.Item key={test.id} value={test.id.toString()}>
-                <Flex gap={'xs'}>
+              <Accordion.Item key={test.id} value={String(test.id)}>
+                <Flex gap="xs">
                   <Accordion.Control>
-                    <Box style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Box
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                      }}
+                    >
                       <Text>{start + index + 1}.</Text>
                       <Text>{test.question}</Text>
                     </Box>
@@ -105,29 +117,29 @@ const TestsPage = () => {
 
                 <Accordion.Panel>
                   <Flex direction="column" gap="xs">
-                    {test.options.map((option) => (
+                    {test.options.map((option, index) => (
                       <Button
                         key={option.id}
-                        style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'start',
+                          gap: '0.5rem',
+                        }}
                         variant={option.isCorrect ? 'filled' : 'outline'}
                         onClick={(e) => {
                           e.stopPropagation()
-
-                          if (option.isCorrect) {
-                            showNotification({
-                              title: 'Это правильный ответ',
-                              message: 'Вы выбрали правильный ответ.',
-                              color: 'green',
-                            })
-                          } else {
-                            showNotification({
-                              title: 'Это неправильный ответ',
-                              message: 'Вы выбрали неправильный ответ.',
-                              color: 'red',
-                            })
-                          }
+                          showNotification({
+                            title: option.isCorrect
+                              ? 'Это правильный ответ'
+                              : 'Это неправильный ответ',
+                            message: option.isCorrect
+                              ? 'Вы выбрали правильный ответ.'
+                              : 'Вы выбрали неправильный ответ.',
+                            color: option.isCorrect ? 'green' : 'red',
+                          })
                         }}
                       >
+                        {index + 1}.{' '}
                         <AnswerCheckbox isCorrect={option.isCorrect} />
                         {option.text}
                       </Button>
@@ -147,10 +159,7 @@ const TestsPage = () => {
             <Select
               data={PAGE_OPTIONS}
               value={String(itemsPerPage)}
-              onChange={(val) => {
-                setItemsPerPage(Number(val))
-                setPage(1)
-              }}
+              onChange={handleChangePerPage}
               style={{ width: 80 }}
               placeholder="На стр."
             />

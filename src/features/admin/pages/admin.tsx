@@ -60,7 +60,7 @@ export default function Admin() {
         <Box
           p="md"
           style={{
-            flex: 5,
+            flex: 7,
             overflowY: 'auto',
             backgroundColor: 'white',
             borderRadius: '8px',
