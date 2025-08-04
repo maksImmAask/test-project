@@ -1,10 +1,10 @@
-import { Box, Text, Title, Center, Button, Accordion, Flex, Loader, Pagination } from '@mantine/core'
+import { Box, Text, Title, Center, Button, Accordion, Flex, Loader, Pagination, Select } from '@mantine/core'
 import { UsersLogic } from '../logic/logic'
 import { Trash } from 'iconsax-react'
 import { ConfirmDeleteModal } from '../../../components/modals/confirmDelete'
 import { useState } from 'react'
 
-const USERS_PER_PAGE = 10
+const PAGE_OPTIONS = ['5', '10', '15', '25']
 
 const UsersPage = () => {
   const {
@@ -19,9 +19,10 @@ const UsersPage = () => {
   } = UsersLogic()
 
   const [activePage, setActivePage] = useState(1)
-  const totalPages = Math.ceil(users.length / USERS_PER_PAGE)
-  const start = (activePage - 1) * USERS_PER_PAGE
-  const end = start + USERS_PER_PAGE
+  const [usersPerPage, setUsersPerPage] = useState(10)
+  const totalPages = Math.max(1, Math.ceil(users.length / usersPerPage))
+  const start = (activePage - 1) * usersPerPage
+  const end = start + usersPerPage
   const currentUsers = users.slice(start, end)
 
   if (loading) {
@@ -44,6 +45,9 @@ const UsersPage = () => {
       >
         <Title order={2} style={{ flex: '1' }} mb="sm">
           Users
+        </Title>
+        <Title>
+          (Количество пользователей в странице: {usersPerPage})
         </Title>
         <AddUserModal />
       </Box>
@@ -97,18 +101,23 @@ const UsersPage = () => {
               </Accordion.Item>
             ))}
           </Accordion>
-          <Center>
-            
-          </Center>
-          {totalPages > 1 && (
+          <Center mt="md" style={{ gap: 16 }}>
             <Pagination
               value={activePage}
               onChange={setActivePage}
               total={totalPages}
-              mt="md"
-              
             />
-          )}
+            <Select
+              data={PAGE_OPTIONS}
+              value={String(usersPerPage)}
+              onChange={val => {
+                setUsersPerPage(Number(val))
+                setActivePage(1) 
+              }}
+              style={{ width: 80 }}
+              placeholder="На стр."
+            />
+          </Center>
         </>
       )}
 
