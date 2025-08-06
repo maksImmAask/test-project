@@ -30,7 +30,7 @@ type AuthState = {
   loading: boolean;
   error: string | null;
   login: (credentials: Credentials) => Promise<void>;
-  register: (data: RegistrationData) => Promise<void>;
+  register: (data: RegistrationData) => Promise<boolean>;
   logout: () => void;
 };
 
@@ -71,11 +71,13 @@ export const useAuthStore = create<AuthState>()(
         try {
           const response = await api.post<User>('/users', data);
           const user = response.data;
-
-          set({ user, isAuthenticated: true, loading: false });
+          
+          set({ user, loading: false });
+          return true
         } catch (error) {
-          const message = error instanceof Error ? error.message : 'Неизвестная ошибка';
-          set({ error: message, loading: false });
+          console.log(error);
+          set({loading: false});
+          return false
         }
       },
 

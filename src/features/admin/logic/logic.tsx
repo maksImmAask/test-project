@@ -6,7 +6,7 @@ import { AddUserModal } from '../../../components/modals/addUser'
 import { useAdminStore } from '../../../store/useAdminStore'
 import { useTestStore } from '../../../store/useTestStore'
 import { useDisclosure } from '@mantine/hooks'
-import { EditUserModal } from '../../../components/modals/changeModal'
+import { EditUserModal } from '../../../components/modals/editUser'
 import type { Question } from '../../../store/useTestStore'
 export const AdminLogic = () => {
   const role = useAuthStore((state) => state.user?.role)

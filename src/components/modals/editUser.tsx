@@ -40,6 +40,7 @@ export function EditUserModal({ user, disabled = false }: EditUserModalProps) {
         incorrect: user.incorrect,
       })
     }
+    // eslint-disable-next-line
   }, [opened, user])
 
   const handleSubmit = async () => {

@@ -3,7 +3,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { useAuthStore } from '../../store/useAuthStore'
 
 export const Header = () => {
-  const { user, isAuthenticated } = useAuthStore()
+  const { user, isAuthenticated , logout} = useAuthStore()
   if (!isAuthenticated) return null 
   const userName = user?.name
 
@@ -23,14 +23,14 @@ export const Header = () => {
           <UnstyledButton>
             <Flex align="center" gap={8}>
               <Text fw={500}>{userName}</Text>
-              <Avatar size="sm" radius="xl" /> {/* <-- сюда поставишь иконку сам */}
+              <Avatar size="sm" radius="xl"/>
               <IconChevronDown size={16} />
             </Flex>
           </UnstyledButton>
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Item onClick={() => console.log('Выйти')}>Выйти</Menu.Item>
+          <Menu.Item onClick={() => {logout()}}>Выйти</Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </Box>
