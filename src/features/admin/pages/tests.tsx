@@ -49,7 +49,7 @@ const TestsPage = () => {
 
   if (loading) {
     return (
-      <Center style={{ minHeight: '100%' }}>
+      <Center style={{ minHeight: '100%', width: '100%' }}>
         <Loader color="#5c68ac" />
       </Center>
     )

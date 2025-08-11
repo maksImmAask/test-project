@@ -1,11 +1,17 @@
 import { Box, Text, Menu, UnstyledButton, Flex, Avatar } from '@mantine/core'
 import { IconChevronDown } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/useAuthStore'
 
 export const Header = () => {
+  const navigare = useNavigate()
   const { user, isAuthenticated , logout} = useAuthStore()
   if (!isAuthenticated) return null 
   const userName = user?.name
+  const handleLogout = () => {
+    logout()
+    navigare('/login')
+  }
 
   return (
     <Box
@@ -30,7 +36,7 @@ export const Header = () => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Item onClick={() => {logout()}}>Выйти</Menu.Item>
+          <Menu.Item onClick={() => {handleLogout()}}>Выйти</Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </Box>

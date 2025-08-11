@@ -5,9 +5,12 @@ import Signin from '../features/signIn/pages/signin'
 import Admin from '../features/admin/pages/admin'
 import UsersPage from '../features/admin/pages/users'
 import TestsPage from '../features/admin/pages/tests'
-import Home from '../features/home/pages/home'
+import Test from '../features/home/pages/test'
+import { NotFound } from '../features/not-found/nFound'
 import PrivateRoute from './PrivateRoute'
+import Home from '../features/home/pages/home'
 import { Layout } from '../layout/layout'
+import Results from '../features/home/pages/results'
 
 export const Router = createBrowserRouter([
   {
@@ -43,11 +46,24 @@ export const Router = createBrowserRouter([
           {
             path: ROUTES.HOME,
             element: <Home />,
+          }
+          ,
+          {
+            path: ROUTES.TEST_START,
+            element: <Test />,
           },
+          {
+            path: ROUTES.RESULTS,
+            element: <Results />, 
+          }
         ],
       },
     ],
   },
+  {
+    path: ROUTES.NOT_FOUND,
+    element: <NotFound />,
+  }
 ])
 
 export default function AppRouter() {

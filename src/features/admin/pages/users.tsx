@@ -88,8 +88,8 @@ const UsersPage = () => {
                   <Table.Td>{user.password}</Table.Td>
                   <Table.Td>{user.role}</Table.Td>
                   <Table.Td>{user.email || 'N/A'}</Table.Td>
-                  <Table.Td>{user.correct}</Table.Td>
-                  <Table.Td>{user.incorrect}</Table.Td>
+                  <Table.Td>{user.role === 'admin' ? '': user.correct}</Table.Td>
+                  <Table.Td>{user.role === 'admin' ? '': user.incorrect}</Table.Td>
                   <Table.Td>
                     <Flex gap="xs">
                       <EditUserModal user={user} disabled={user.role === 'admin'} />

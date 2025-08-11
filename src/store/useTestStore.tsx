@@ -8,6 +8,11 @@ export type Option = {
   text: string
   isCorrect: boolean
 }
+type TestResult = {
+  correct: number;
+  total: number;
+  timeSpent: number;
+}
 
 export type Question = {
   id: number
@@ -20,10 +25,12 @@ type TestState = {
   currentTest: Question | null
   loading: boolean
   search: string
+  results: TestResult | null
   setSearch: (search: string) => void
   setTests: (tests: Question[]) => void
   setCurrentTest: (test: Question | null) => void
   getTests: () => Promise<void>
+  setResults: (res: TestResult | null) => void
   deleteTest: (id: number) => Promise<void>
   updateTest: (id: number, updatedQuestion: Question) => Promise<void>
   addQuestion: (question: Question) => Promise<void>
@@ -31,9 +38,11 @@ type TestState = {
 
 export const useTestStore = create<TestState>((set) => ({
   tests: [],
+  results: null,
   currentTest: null,
   loading: true,
   search: '',
+  setResults: (res) => set({ results: res }),
   setSearch: (search) => set({ search }),
 
   setTests: (tests) => set({ tests }),
