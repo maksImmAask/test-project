@@ -1,16 +1,19 @@
 import { Box, Button, Flex, Text, Loader } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../../store/useAuthStore';
 import { useTestStore } from '../../../store/useTestStore';
 
 const Test = () => {
   const [currentTarget, setCurrentTarget] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [testId: number]: number | null }>({});
   const { tests, getTests, loading, setResults } = useTestStore();
+  const { setHasFinishedTest } = useAuthStore();
 
   const [timeLeft, setTimeLeft] = useState(1800); 
   const timerRef = useRef<number | null>(null);
   const navigate = useNavigate();
+    const { updateResults } = useAuthStore.getState();
 
   useEffect(() => {
     getTests();
@@ -25,7 +28,7 @@ const Test = () => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current!);
-            navigate('/'); 
+            handleFinish(); 
             return 0;
           }
           return prev - 1;
@@ -39,7 +42,8 @@ const Test = () => {
         timerRef.current = null;
       }
     };
-  }, [sortedTests, navigate]);
+  }, [sortedTests]);
+
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60)
@@ -70,17 +74,23 @@ const Test = () => {
 
   const handleFinish = () => {
     clearInterval(timerRef.current!);
+    setHasFinishedTest(true);
 
     let correct = 0;
+    let wrong = 0;
 
     sortedTests.forEach((test) => {
       const userAnswerIndex = selectedAnswers[test.id];
       if (typeof userAnswerIndex === 'number') {
         const userAnswer = test.options[userAnswerIndex];
-      
+
         if (userAnswer && userAnswer.isCorrect) {
           correct++;
+        } else {
+          wrong++;
         }
+      } else {
+        wrong++; 
       }
     });
 
@@ -92,8 +102,11 @@ const Test = () => {
       timeSpent,
     });
 
+    updateResults(correct, wrong);
+
     navigate('/results');
   };
+
 
   if (loading) return <Loader color="#5c68ac" />;
   if (sortedTests.length === 0) return <Text>Нет доступных тестов</Text>;

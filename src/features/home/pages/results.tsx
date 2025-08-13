@@ -1,11 +1,16 @@
 import { Box, Button, Center, Stack, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useTestStore } from "../../../store/useTestStore";
+import { useAuthStore } from "../../../store/useAuthStore";
 
 const Results = () => {
   const { results } = useTestStore();
+  const { hasFinishedTest} = useAuthStore();
   const navigate = useNavigate();
-
+  if (!hasFinishedTest) {
+    navigate("/");
+    return null;
+  }
   if (!results) {
     navigate("/");
     return null;
